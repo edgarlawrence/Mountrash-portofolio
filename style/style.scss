@@ -1,0 +1,328 @@
+@import 'var';
+@import 'rules';
+@import 'base';
+
+// -------------------------------------------- Start Line
+nav {
+    background: transparent; //$theme1;
+    position: fixed; top: 0; z-index: 25; margin: 1em 0;
+    .grid { @include rata(row); padding: 0 1em; justify-content: space-between; background: $pure; border-radius: 10px; }
+    .logo img { width: auto; height: 45px; margin: 5px;}
+    .menu { @include rata(row); height: 45px;
+        .list { cursor: pointer; position: relative; margin-left: 4em; color: $solid; font-weight: $reg; height: 100%; //background: #000;
+            @keyframes dropdown {
+                from { transform: translateY(-3em); opacity: 0;}
+                to { transform: translateY(10px);}
+            }
+            .drop { display: none; animation: .6s ease both; flex-direction: column; background: $pure; position: absolute; padding: 10px 3em 10px 1em; margin-top: 2em; box-shadow: 0 0 10px rgba($color: $dark, $alpha: .1); top: 0; left: 0;
+                .list { margin-left: 0; padding: 5px; color: $upper; font-weight: $reg; &:hover { color: $solid;} }
+            }
+            i { margin-left: 5px;}
+            &:hover { span {transform: scale(.9);} .drop {display: flex; animation-name: dropdown;}}
+        }
+        & > .list { @include rata(row); }
+        .cta { @include solid($theme1, 10px 1.5em); border-radius: 50px; }
+    }
+
+    .menu-btn {
+        @include min(841px) { display: none; }
+        cursor: pointer; z-index: 2; transform: scale(.75); margin-right: -1em;
+        .bar1, .bar2, .bar3 {
+            background: $theme1;
+            width: 40px;
+            height: 4px;
+            border-radius: 5px;
+            margin: 8px 0;
+            transition: 0.4s;
+        }
+        .bar1 {transform: translateX(0);}
+        .bar2 {transform: translateX(0);}
+    
+        &.change {
+            .bar1 { transform: rotate(-45deg) translate(-10px, 8px); }
+            .bar2 { opacity: 0; }
+            .bar3 { transform: rotate(45deg) translate(-9px, -7px); }
+        }
+    }
+
+    @include max(1220px) {
+        @include min(840px) {
+            padding: 0 2vw;
+        }
+    }
+
+    @include min(841px) {
+        &.active {
+            margin: 0; box-shadow: 0 0 10px 0 rgba($color: $theme1, $alpha: .5);
+            @include grad(90deg, $theme1, #1f75e6);
+            .grid { background: transparent; max-width: 100%; }
+            .list { color: $pure; }
+        }
+    }
+
+    @include max(840px) {
+        background: $pure; margin: 0;
+        .grid { background: transparent; height: auto; flex-wrap: wrap; }
+        @keyframes slide {
+            from { transform: translateY(-4em); opacity: 0; }
+            to { transform: translateY(0); }
+        }
+        .menu { 
+            padding: 1em 4vw; flex-direction: column; flex-basis: 100%; height: auto; display: none; animation: ease .8s both;
+            .list { padding: 10px; text-align: center; @include rata(column); margin: 5px 0; span{ text-align: center;} 
+                .drop { width: 100%; padding: 0 10px; display: flex; position: relative; margin-top: 10px; .list { padding: 10px; } }
+            }
+            .list:not(:last-child) {
+                border-bottom: 1px solid $upper; width: 100%;
+            }
+        }
+        .menu.active {
+            display: flex;
+            animation-name: slide;
+        }
+
+        .cta { margin: 0; margin-top: 1em; }
+    }
+}
+
+.switch {
+    position: fixed;
+    @include rata(column);
+    width: 60px; height: 34px;
+    bottom: 0; right: 0;
+    margin: 2em;
+    z-index: 5;
+
+    input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+    
+    input:checked + .slider:before {
+    transform: translateX(26px);
+    }
+    
+    .slider.round {
+        border-radius: 34px;
+        &:before {
+            border-radius: 50%;
+        }
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        &:before {
+            @include rata(row);
+            font-size: 10px; font-weight: $reg;
+            position: absolute;
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background: #fff;
+        }
+    }
+}
+
+header {
+    position: relative; @include rata(column); color: $pure;
+    .grid { min-height: 680px; height: 80vh; z-index: 2; @include rata(column); justify-content: space-around; position: relative; }
+    .upper { margin-top: 5vw; }
+    .logo { width: auto; height: 80px; margin-bottom: 1em;}
+    h2 { font-size: 20px; color: $pure; font-weight: $thin; font-style: italic; text-align: center;}
+    .bg { position: absolute; @include rata(row); @extend .full; img { @extend .img; }
+        &::before { @extend .full; content: ''; position: absolute; @include grad(0deg, rgba($color: $dark, $alpha: .65), rgba($color: $dark, $alpha: 0)); }
+    }
+
+    .download {
+        text-align: center; font-weight: $reg;
+        p { @include rata(row); }
+        span img { width: auto; height: 50px; margin: 0 2em; &:hover {transform: scale(.9);}}
+        @include max(480px) {
+            span img { height: calc(50px - 3vw); margin: 0 2vw;}
+        }
+    }
+
+    @include max(640px) {
+        .logo { width: 100%; height: auto; margin: 0 2vw 1em 2vw; }
+        h2 { font-size: clamp(12px, 5vw, 16px); line-height: clamp(20px, 5vw, 32px); }
+    }
+}
+
+section {
+    padding: 4em 0;
+    h1 {@include rata(row); span { text-align: center; font-weight: $reg; font-size: 36px;}}
+    &#why {
+        .reason {
+            @include auto(277px, 2em); align-items: center;
+            .iconic img { width: 100%; height: 100%; object-fit: contain;} margin-bottom: 2em;
+            .info { text-align: center; @include rata(column); h2 { background: $theme1; font-weight: $reg; width: 50px; height: 50px; @include rata(row); border-radius: 50%; box-shadow: 10px 10px 20px 0 rgba($color: $theme1, $alpha: .35); color: $pure;} p { @include font(18px)}}
+            &.reverse .info { h2 { box-shadow: -10px 10px 20px 0 rgba($color: $theme1, $alpha: .35); } }
+
+            @include min(681px) {
+                &.reverse .info { grid-area: 1 / 1 / 2 / 2; }
+            }
+            @include max(680px) {
+                .info { grid-area: 1 / 1 / 2 / 2; }
+            }
+        }
+    }
+    &#testimoni {
+        .swiper-slide { width: 300px; margin: 0 2em; text-align: center;
+            .photo img { width: auto; height: 200px;}
+            p { @include font(14px); }
+            h2 { font-size: 18px; font-weight: $bold;}
+            .user { @include rata(row); font-size: 13px; font-weight: $reg; }
+        }
+    }
+
+    &#progress {
+        .swiper-slide { @include rata(row); height: 100%;}
+        .table { width: 100%; max-width: 640px;
+            .row { border: 1px solid; @include split(2, 1em);}
+            .col { text-align: center; padding: 10px; font-weight: $reg;}
+            .row:first-child .col { font-weight: $bold; @include rata(row); }
+        }
+        .card {
+            width: 100%; @include auto(280px, 2em);
+            .list { @include rata(row); justify-content: flex-start; padding: 15px 2em; border-radius: 10px; color: $pure;
+                img { width: 50px; height: auto; margin-right: 2em; filter: invert(1); } h2, p { margin: 0; } h2 { font-weight: $reg; font-size: 24px; margin-bottom: 10px; } p { font-size: 14px; margin-bottom: 5px; }
+                background: $theme1;
+                $columns: 6;
+
+                @for $i from 2 through $columns {
+                    &:nth-child(#{$i}) {
+                        $bgh : adjust-hue($theme1, $i * 10%);
+                        // $bgd: darken($theme1, $i * $i);
+                        background: $bgh;
+                    }
+                }
+            }
+        }
+        .proggress {
+            @include rata(row); flex-wrap: wrap;
+            div { @include rata(column); margin: 1em 4vw; }
+            img { width: auto; height: 100px;}
+            p { margin: 0; }
+            h2 { margin: 10px 0; }
+        }
+
+    }
+
+    &#news {
+        .swiper-slide {
+            width: 300px; height: 275px; margin: 0 2em;
+            img { @extend .img; }
+        }
+    }
+
+    &#offer {
+        background: $bg; padding-bottom: 8em;
+        .offer {
+            @include auto(260px, 4em 2em);
+            .list { 
+                background: $pure; border-radius: 10px;
+                @include rata(column); justify-content: flex-start; position: relative;
+                hr, h1, h2 { margin: 0;}
+                hr { width: 10vw; min-width: 100px; margin: 10px auto;} 
+                h2 { font-size: 20px; font-weight: $reg; margin-top: 1em; } h1 { font-size: 28px; font-weight: $bold; }
+                .thumb { width: 100%; height: 250px; border-top-left-radius: 10px;
+                    border-top-right-radius: 10px; overflow: hidden; img { @extend .img; }}
+                ul { width: 100%; margin-top: 2em; }
+                li{
+                    list-style: none;
+                    margin-bottom: 10px;
+                    @include rata(row); justify-content: flex-start;
+                    &::before{
+                        content: '';
+                        display: inline-block;
+                        height: 16px;
+                        width: 16px;
+                        margin-right: 10px;
+                        background-image: url(../img/check.png);
+                        background-size: contain;
+                    }
+                }
+                padding-bottom: 4em;
+                .cta-join {
+                    @include solid($theme1, 10px 2em); position: absolute;
+                    bottom: 0; transform: translateY(20px); border-radius: 50px;
+                }
+            }
+        }
+    }
+    &#founder {
+        .founder {
+            @include auto(280px, 4em 2em);
+            .list { @include rata(column); justify-content: flex-start;
+                h3, p { margin: 0; text-align: center; }
+                h3 { font-size: 20px; font-weight: $bold; margin: 10px 0;}
+                p { font-weight: $reg;}
+            }
+            .photo img { width: auto; height: 175px;}
+        }
+    }
+    &#join {
+        background-image: url('../img/background 3.jpg');
+        background-size: cover;
+        .grid {
+            .cta { @include rata(row); flex-wrap: wrap;}
+            .drop {
+                @include rata(column);
+                margin: 2em 6em; cursor: pointer;
+                img { width: auto; height: 175px; margin-bottom: 1em;}
+                &:hover { img { transform: scale(.95); opacity: .65; }}
+                .drop-down { text-align: center; overflow: hidden; height: 0;}
+
+                &.open { .drop-down { height: auto;}}
+            }
+        }
+    }
+}
+
+footer {
+    padding: 1em; background: $theme1;
+    img { width: auto; &:hover { transform: scale(.9);} }
+    .grid {
+        @include rata(row); justify-content: space-evenly;
+        flex-wrap: wrap;
+        .download img { display: block; height: 50px; margin: 10px 0; }
+        .logo img { height: 50px; }
+        .follow { 
+            @include rata(column);
+            p { font-weight: $reg; font-size: 20px; color: $pure;}
+            .sosmed {
+                @include rata(row);
+                img { height: 35px; margin: 0 10px; }
+            }
+        }
+    }
+
+    @include max(420px) {
+        .logo img { width: 100%; height: auto !important;}
+    }
+}
+
+html[lang='id'] {
+    span.eng { display: none;}
+    span.id { display: flex;}
+    .switch .slider::before {
+        content: "eng";
+    }
+    .slider { background: $theme1; }
+}
+
+html[lang='eng'] {
+    span.id { display: none;}
+    span.eng { display: flex;}
+    .switch .slider::before {
+        content: "id";
+    }
+    .slider { background: rgb(255, 0, 106); }
+}
